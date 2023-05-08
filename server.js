@@ -2,6 +2,8 @@ import express from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
 import morgan from 'morgan';
+import connectDB from './Config/db.js';
+import userRoutes from './Routes/user.Routes.js';
 
 // Rest object
 const app = express();
@@ -12,8 +14,11 @@ app.use(morgan('dev'));
 app.use(cors());
 app.use(express.json());
 
+// Database Connection
+connectDB(process.env.DATABASE_URL);
+
 // Routes
-app.get('/', (req, res) => { res.send("Hello Welcome") })
+app.use('/api/v1/user', userRoutes);
 
 const PORT = process.env.PORT;
 // Listen Port
