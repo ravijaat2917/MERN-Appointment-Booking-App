@@ -1,0 +1,77 @@
+.main {
+  padding: 10px;
+  height: 100vh;
+}
+
+.layout {
+  display: flex;
+}
+
+.sidebar {
+  min-height: 100%;
+  padding-top: 5px !important;
+  width: 300px;
+  border-radius: 5px;
+  background-color: rgb(87, 12, 12);
+  box-shadow: 0 0 2px grey;
+  margin-right: 20px;
+  color: white;
+}
+
+.content {
+  width: 100%;
+  min-height: 100%;
+  padding: 5px;
+  border-radius: 5px;
+}
+
+.header {
+  height: 10vh;
+  margin-bottom: 20px;
+  box-shadow: 0 0 2px grey;
+  background-color: white;
+}
+
+.body {
+  height: 85vh;
+  margin-bottom: 20px;
+  box-shadow: 0 0 2px grey;
+  background-color: white;
+}
+
+.logo {
+  font-size: 1rem;
+  margin: 20px 0px;
+}
+.logo h6 {
+  text-align: center;
+  font-size: 1.5rem;
+  margin: 20px 0px;
+}
+.menu {
+  margin-top: 50px;
+}
+.menu-item {
+  margin-top: 30px;
+}
+
+.menu-item a {
+  color: white;
+  text-decoration: none;
+  font-size: 1.2rem;
+}
+
+.menu-item i {
+  font-size: 1.2rem;
+  margin: 0 19px;
+}
+
+.active {
+  background-color: white;
+  padding: 10px;
+}
+
+.active a,
+.active i {
+  color: rgb(87, 12, 12);
+}
