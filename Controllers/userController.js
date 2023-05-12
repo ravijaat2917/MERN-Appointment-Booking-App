@@ -1,6 +1,7 @@
 import userModel from "../Models/userModel.js";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
+import doctorModel from "../Models/doctorModel.js";
 
 export const registerController = async (req, res) => {
   try {
@@ -65,18 +66,47 @@ export const authController = async (req, res) => {
         .status(200)
         .send({ success: false, message: "User Not Found" });
     } else {
-      return res
-        .status(200)
-        .send({
-          success: true,
-          message: "User Authenticated",
-          data: { name: user.name, email: user.email },
-        });
+      return res.status(200).send({
+        success: true,
+        message: "User Authenticated",
+        data: user,
+      });
     }
   } catch (error) {
     console.log(error);
     res
       .status(500)
       .send({ success: false, message: "Authentication Error", error });
+  }
+};
+
+export const applyDoctorController = async (req, res) => {
+  try {
+    const newDoctor = await doctorModel({ ...req.body, status: "pending" });
+    await newDoctor.save();
+    const adminUser = await userModel.findOne({ isAdmin: true });
+    const notification = adminUser.notification;
+    notification.push({
+      type: "Apply-Doctor-Request",
+      message: `${newDoctor.firstName} ${newDoctor.lastName} has applied for a Doctor Account`,
+      data: {
+        doctorId: newDoctor._id,
+        name: newDoctor.firstName + " " + newDoctor.lastName,
+        onClickPath: "/admin/doctors",
+      },
+    });
+    const ID = adminUser._id;
+    await userModel.findByIdAndUpdate(ID, { notification });
+    res.status(201).send({
+      success: true,
+      message: "Doctor Applied Successfully",
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).send({
+      success: false,
+      message: "Errro While appling for Doctor",
+      error,
+    });
   }
 };
