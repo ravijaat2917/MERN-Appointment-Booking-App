@@ -4,6 +4,7 @@ import dotenv from 'dotenv';
 import morgan from 'morgan';
 import connectDB from './Config/db.js';
 import userRoutes from './Routes/user.Routes.js';
+import adminRoutes from './Routes/admin.Routes.js'
 
 // Rest object
 const app = express();
@@ -19,6 +20,8 @@ connectDB(process.env.DATABASE_URL);
 
 // Routes
 app.use('/api/v1/user', userRoutes);
+app.use('/api/v1/admin', adminRoutes);
+
 
 const PORT = process.env.PORT;
 // Listen Port
