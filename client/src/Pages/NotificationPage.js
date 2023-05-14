@@ -65,11 +65,11 @@ const NotificationPage = () => {
   return (
     <Layout>
       <h4 className="m-3 text-center p-3">Notification Page</h4>
-      <Tabs>
+      <Tabs className="p-4">
         <Tabs.TabPane tab={"Unread"} key={1}>
           <div className="d-flex justify-content-end">
             <h6
-              className="p-2"
+              className="p-2 text-primary"
               style={{ cursor: "pointer" }}
               onClick={handleMarkAllRead}
             >
@@ -96,7 +96,7 @@ const NotificationPage = () => {
         <Tabs.TabPane tab={"Read"} key={0}>
           <div className="d-flex justify-content-end">
             <h6
-              className="p-2"
+              className="p-2 text-primary"
               style={{ cursor: "pointer" }}
               onClick={handleDeleteAllRead}
             >
