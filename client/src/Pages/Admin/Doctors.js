@@ -22,6 +22,27 @@ const Doctor = () => {
       message.error("Errro in Getting Doctor");
     }
   };
+
+  const handleAccountStatus = async (record, status) => {
+    try {
+      const res = await axios.post("/api/v1/admin/changeAccountStatus", {
+        doctorId: record._id,
+        userId:record.userId,
+        status: status,
+      },
+        {
+          headers: {
+          Authorization: `Bearer ${localStorage.getItem('token')}`
+        }
+        });
+      if (res.data.success) {
+        message.success(res.data.message)
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   useEffect(() => {
     getDoctor();
   }, []);
@@ -47,15 +68,19 @@ const Doctor = () => {
       dataIndex: "status",
     },
     {
-      title:'Contact No.',
-      dataIndex:'phone'
+      title: "Contact No.",
+      dataIndex: "phone",
     },
     {
       title: "Actions",
       dataIndex: "actions",
       render: (text, record) => (
         <div className="d-flex">
-          {record.status === 'pending' ? <button className="btn btn-success">Approve</button> : <button className="btn btn-danger">Reject</button>}
+          {record.status === "Pending" ? (
+            <button className="btn btn-success" onClick={handleAccountStatus(record , 'Approved')} >Approve</button>
+          ) : (
+            <button className="btn btn-danger">Reject</button>
+          )}
         </div>
       ),
     },

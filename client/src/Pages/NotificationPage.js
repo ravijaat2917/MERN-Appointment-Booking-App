@@ -1,22 +1,23 @@
 import React from "react";
 import Layout from "../Components/Layout";
-import { Tabs, message } from "antd";
-import { useDispatch, useSelector } from "react-redux";
-import { hideLoading, showLoading } from "../Redux/features/alertSlice";
-import axios from "axios";
+import { message, Tabs } from "antd";
+import { useSelector, useDispatch } from "react-redux";
+import { showLoading, hideLoading } from "../Redux/features/alertSlice";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
 const NotificationPage = () => {
-  const navigate = useNavigate();
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const { user } = useSelector((state) => state.user);
+  //   handle read notification
   const handleMarkAllRead = async () => {
     try {
       dispatch(showLoading());
       const res = await axios.post(
         "/api/v1/user/get-all-notification",
         {
-          userId: user?._id,
+          userId: user._id,
         },
         {
           headers: {
@@ -27,46 +28,48 @@ const NotificationPage = () => {
       dispatch(hideLoading());
       if (res.data.success) {
         message.success(res.data.message);
+        window.location.reload();
       } else {
         message.error(res.data.message);
       }
     } catch (error) {
       dispatch(hideLoading());
       console.log(error);
-      message.error("Something Went Wrong");
+      message.error("somthing went wrong");
     }
   };
+
+  // delete notifications
   const handleDeleteAllRead = async () => {
     try {
       dispatch(showLoading());
       const res = await axios.post(
         "/api/v1/user/delete-all-notification",
-        {
-          userId: user?._id,
-        },
+        { userId: user._id },
         {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("token")}`,
           },
         }
       );
+      dispatch(hideLoading());
       if (res.data.success) {
         message.success(res.data.message);
+        window.location.reload();
       } else {
         message.error(res.data.message);
       }
-      dispatch(hideLoading());
     } catch (error) {
       dispatch(hideLoading());
       console.log(error);
-      message.error("Error in deleting notifications");
+      message.error("Somthing Went Wrong In Ntifications");
     }
   };
   return (
     <Layout>
-      <h4 className="m-3 text-center p-3">Notification Page</h4>
-      <Tabs className="p-4">
-        <Tabs.TabPane tab={"Unread"} key={1}>
+      <h4 className="p-3 text-center">Notification Page</h4>
+      <Tabs>
+        <Tabs.TabPane tab="unRead" key={0}>
           <div className="d-flex justify-content-end">
             <h6
               className="p-2 text-primary"
@@ -76,24 +79,22 @@ const NotificationPage = () => {
               {user?.notification.length ? "Mark All Read" : "No Notifications"}
             </h6>
           </div>
-          {user?.notification.map((Msg) => {
-            return (
-              <div
-                className="card"
-                onClick={() => navigate(`${Msg.data.onClickPath}`)}
-              >
+
+          {user?.notification.map((notificationMgs) => (
+            <div className="m-3">
+              <div className="card" style={{ cursor: "pointer" }}>
                 <div
-                  className="card-text"
-                  onClick={navigate(`${Msg.data.onClickPath}`)}
-                  style={{ cursor: "pointer" }}
+                  className="card-text "
+                  onClick={() => navigate(notificationMgs.onClickPath)}
+                  style={{ padding: "5px" }}
                 >
-                  {Msg.message}
+                  {notificationMgs.message}
                 </div>
               </div>
-            );
-          })}
+            </div>
+          ))}
         </Tabs.TabPane>
-        <Tabs.TabPane tab={"Read"} key={0}>
+        <Tabs.TabPane tab="Read" key={1}>
           <div className="d-flex justify-content-end">
             <h6
               className="p-2 text-primary"
@@ -105,22 +106,18 @@ const NotificationPage = () => {
                 : "No Notifications"}
             </h6>
           </div>
-          {user?.seennotification.map((Msg) => {
-            return (
-              <div
-                className="card"
-                onClick={() => navigate(`${Msg.data.onClickPath}`)}
-              >
+          {user?.seennotification.map((notificationMgs) => (
+            <div className="card" style={{ cursor: "pointer" }}>
+              <div className="m-3">
                 <div
                   className="card-text"
-                  onClick={navigate(`${Msg.data.onClickPath}`)}
-                  style={{ cursor: "pointer" }}
+                  onClick={() => navigate(notificationMgs.onClickPath)}
                 >
-                  {Msg.message}
+                  {notificationMgs.message}
                 </div>
               </div>
-            );
-          })}
+            </div>
+          ))}
         </Tabs.TabPane>
       </Tabs>
     </Layout>
