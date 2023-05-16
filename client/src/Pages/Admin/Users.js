@@ -38,8 +38,11 @@ const Users = () => {
       dataIndex: "email",
     },
     {
-      title: "CreatedAt",
-      dataIndex: "createdAt",
+      title: "Role",
+      dataIndex: "roles",
+      render: (text, record) => (
+        record.isAdmin === true ? "Admin" : "User"
+      )
     },
     {
       title: "Actions",
