@@ -7,7 +7,29 @@ import { message, Badge } from "antd";
 const Layout = ({ children }) => {
   const location = useLocation();
   const { user } = useSelector((state) => state.user);
-  var sidebarMenu = user?.isAdmin ? adminMenu : userMenu;
+  const doctorMenu = [
+    {
+      name: "Home",
+      path: "/",
+      icon: "fa-solid fa-house",
+    },
+    {
+      name: "Appointments",
+      path: "/apointments",
+      icon: "fa-solid fa-list-ul",
+    },
+    {
+      name: "Profile",
+      path: `/doctor/profile/${user?._id}`,
+      icon: "fa-solid fa-user",
+    },
+  ];
+
+  var sidebarMenu = user?.isAdmin
+    ? adminMenu
+    : user?.isDoctor
+    ? doctorMenu
+    : userMenu;
 
   const navigate = useNavigate();
   return (
@@ -24,7 +46,7 @@ const Layout = ({ children }) => {
                 const isActive = location.pathname === menu.path;
                 return (
                   <>
-                    <div className={`menu-item ${isActive && "active"}`} >
+                    <div className={`menu-item ${isActive && "active"}`}>
                       <i className={menu.icon} />
                       <Link to={menu.path}>{menu.name}</Link>
                     </div>
@@ -47,8 +69,11 @@ const Layout = ({ children }) => {
             </div>
           </div>
           <div className="content">
-            <div className="header pb-3" style={{height:'max-content' , textAlign:"center"}}>
-              <div className="header-content" style={{cursor:'pointer'}} >
+            <div
+              className="header pb-3"
+              style={{ height: "max-content", textAlign: "center" }}
+            >
+              <div className="header-content" style={{ cursor: "pointer" }}>
                 <Badge
                   count={user?.notification.length}
                   onClick={() => {

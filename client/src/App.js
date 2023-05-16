@@ -9,7 +9,7 @@ import ProtectedRoutes from "./Components/ProtectedRoutes";
 import PublicRoute from "./Components/PublicRoute";
 import ApplyDoctor from "./Pages/ApplyDoctor";
 import Appointments from "./Pages/Appointments";
-import UserProfile from "./Pages/UserProfile";
+import AdminProfile from "./Pages/Doctor/Profile";
 import NotificationPage from "./Pages/NotificationPage";
 import Users from "./Pages/Admin/Users";
 import Doctors from "./Pages/Admin/Doctors";
@@ -88,10 +88,10 @@ function App() {
               }
             />
             <Route
-              path="/profile"
+              path="/doctor/profile/:id"
               element={
                 <ProtectedRoutes>
-                  <UserProfile />
+                  <AdminProfile />
                 </ProtectedRoutes>
               }
             />
