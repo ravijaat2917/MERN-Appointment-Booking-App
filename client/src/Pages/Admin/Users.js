@@ -41,7 +41,9 @@ const Users = () => {
       title: "Role",
       dataIndex: "roles",
       render: (text, record) => (
-        record.isAdmin === true ? "Admin" : "User"
+        record.isAdmin === true ? "Admin" : (
+          record.isDoctor === true ? 'Doctor' : 'User'
+        )
       )
     },
     {
