@@ -3,9 +3,8 @@ import Layout from "../../Components/Layout";
 import { useSelector, useDispatch } from "react-redux";
 import { useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
-import { Col, Form, Input, Row, message } from "antd";
+import { Col, Form, Input, Row, message  } from "antd";
 import { showLoading, hideLoading } from "../../Redux/features/alertSlice.js";
-import moment from "moment";
 
 const Profile = () => {
   const dispatch = useDispatch();
@@ -81,10 +80,6 @@ const Profile = () => {
           className="m-3"
           initialValues={{
             ...doctor,
-            timings: [
-              moment(doctor.timings[0]).format("HH:mm"),
-              moment(doctor.timings[1]).format("HH:mm"),
-            ],
           }}
         >
           <h4>Personal Details :</h4>

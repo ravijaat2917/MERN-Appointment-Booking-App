@@ -152,3 +152,19 @@ export const deleteAllNotificationController = async (req, res) => {
       .send({ success: false, message: "Unable to delete", error });
   }
 };
+
+export const getAllDoctorsController = async (req, res) => {
+  try {
+    const doctors = await doctorModel.find({ status: "Approved" });
+    res.status(200).send({
+      success: true,
+      message: "Doctors Lists Fetched Successfully",
+      data: doctors,
+    });
+  } catch (error) {
+    console.log(error);
+    res
+      .status(500)
+      .send({ success: false, message: "Error while fetching Doctors", error });
+  }
+};

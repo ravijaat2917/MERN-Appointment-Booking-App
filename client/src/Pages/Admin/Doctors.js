@@ -23,21 +23,24 @@ const Doctor = () => {
     }
   };
 
-  const handleAccountStatus = async (record, status) => {
+  const handleAccountStatus = async (record) => {
     try {
-      const res = await axios.post("/api/v1/admin/changeAccountStatus", {
-        doctorId: record._id,
-        userId:record.userId,
-        status: status,
-      },
+      await axios.post(
+        "/api/v1/admin/changeAccountStatus",
+        {
+          doctorId: record._id,
+          userId: record.userId,
+          status: "Approved",
+        },
         {
           headers: {
-          Authorization: `Bearer ${localStorage.getItem('token')}`
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
         }
-        });
-      if (res.data.success) {
-        message.success(res.data.message)
-      }
+      );
+      // if (res.data.success) {
+      //   message.success(res.data.message)
+      // }
     } catch (error) {
       console.log(error);
     }
@@ -76,8 +79,10 @@ const Doctor = () => {
       dataIndex: "actions",
       render: (text, record) => (
         <div className="d-flex">
-          {record.status === "Pending" ? (
-            <button className="btn btn-success" onClick={handleAccountStatus(record , 'Approved')} >Approve</button>
+          {record.status === "pending" ? (
+            <div onClick={handleAccountStatus(record)}>
+              <button className="btn btn-success">Approve</button>
+            </div>
           ) : (
             <button className="btn btn-danger">Reject</button>
           )}

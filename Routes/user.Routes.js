@@ -5,7 +5,8 @@ import {
   applyDoctorController,
   registerController,
   getAllNotificationController,
-  deleteAllNotificationController
+  deleteAllNotificationController,
+  getAllDoctorsController
 } from "../Controllers/userController.js";
 import { authMiddleware } from "../Middlewares/authMiddleware.js";
 
@@ -28,5 +29,7 @@ router.post("/apply-doctor", authMiddleware, applyDoctorController);
 router.post('/get-all-notification', authMiddleware, getAllNotificationController);
 
 router.post('/delete-all-notification', authMiddleware, deleteAllNotificationController);
+
+router.get('/getAllDoctors' , authMiddleware, getAllDoctorsController);
 
 export default router;
