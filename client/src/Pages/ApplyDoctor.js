@@ -103,7 +103,7 @@ const ApplyDoctor = () => {
             </Form.Item>
           </Col>
         </Row>
-        <div className="d-flex justify-content-end">
+        <div className="d-flex justify-content-start">
           <button className="btn btn-primary" type="submit">
             Submit
           </button>
