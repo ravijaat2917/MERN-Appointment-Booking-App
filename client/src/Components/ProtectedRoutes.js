@@ -39,6 +39,7 @@ export default function ProtectedRoutes({ children }) {
     if (!user) {
       getUser();
     }
+    // eslint-disable-next-line
   }, [user , getUser]);
 
   if (localStorage.getItem("token")) {

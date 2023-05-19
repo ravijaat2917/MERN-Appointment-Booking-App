@@ -6,7 +6,9 @@ import {
   registerController,
   getAllNotificationController,
   deleteAllNotificationController,
-  getAllDoctorsController
+  getAllDoctorsController,
+  bookAppointmentController,
+  userAppointmentController,
 } from "../Controllers/userController.js";
 import { authMiddleware } from "../Middlewares/authMiddleware.js";
 
@@ -26,10 +28,24 @@ router.post("/getUserData", authMiddleware, authController);
 // Apply Doctor || Post
 router.post("/apply-doctor", authMiddleware, applyDoctorController);
 
-router.post('/get-all-notification', authMiddleware, getAllNotificationController);
+router.post(
+  "/get-all-notification",
+  authMiddleware,
+  getAllNotificationController
+);
 
-router.post('/delete-all-notification', authMiddleware, deleteAllNotificationController);
+router.post(
+  "/delete-all-notification",
+  authMiddleware,
+  deleteAllNotificationController
+);
 
-router.get('/getAllDoctors' , authMiddleware, getAllDoctorsController);
+router.get("/getAllDoctors", authMiddleware, getAllDoctorsController);
+
+// book appointment
+router.post("/book-appointment", authMiddleware, bookAppointmentController);
+
+// Appointment List
+router.get('/user-appointments', authMiddleware, userAppointmentController);
 
 export default router;

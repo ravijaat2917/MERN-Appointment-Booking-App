@@ -2,6 +2,7 @@ import userModel from "../Models/userModel.js";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import doctorModel from "../Models/doctorModel.js";
+import appointmentModel from "../Models/appointmentModel.js";
 
 export const registerController = async (req, res) => {
   try {
@@ -166,5 +167,53 @@ export const getAllDoctorsController = async (req, res) => {
     res
       .status(500)
       .send({ success: false, message: "Error while fetching Doctors", error });
+  }
+};
+
+export const bookAppointmentController = async (req, res) => {
+  try {
+    req.body.status = "pending";
+    const newAppointment = await appointmentModel(req.body);
+    await newAppointment.save();
+
+    const user = await userModel.findOne({ _id: req.body.doctorInfo.userId });
+    user.notification.push({
+      type: "New-Appointment-Request",
+      message: `New Appointment Request From ${req.body.userInfo.name}`,
+      onClickPath: "/user/appointments",
+    });
+    await user.save();
+    res
+      .status(200)
+      .send({ success: true, message: "Appointment Book Successfully" });
+  } catch (error) {
+    console.log(error);
+    res
+      .status(500)
+      .send({ success: false, message: "Error while book appointment" });
+  }
+};
+
+export const userAppointmentController = async (req, res) => {
+  try {
+    const appointments = await appointmentModel.find({
+      userId: req.body.userId,
+    });
+    res
+      .status(200)
+      .send({
+        success: true,
+        message: "Users Appointments Fetch Successfully",
+        data: appointments,
+      });
+  } catch (error) {
+    console.log(error);
+    res
+      .status(500)
+      .send({
+        success: false,
+        message: "Error in getting appointments",
+        error,
+      });
   }
 };
